@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
 
+import CounterHistory from "./CounterHistory.jsx";
 import IconButtonMemo from "../UI/IconButton.jsx";
 import MinusIcon from "../UI/Icons/MinusIcon.jsx";
 import PlusIcon from "../UI/Icons/PlusIcon.jsx";
@@ -30,14 +31,23 @@ export default function Counter({ initialCount }) {
         [initialCount]
     );
 
-    const [counter, setCounter] = useState(initialCount);
+    // const [counter, setCounter] = useState(initialCount);
+    const [counterChanges, setCounterChanges] = useState([initialCount]);
+    console.log(counterChanges);
+
+    const currentCounter = counterChanges.reduce(
+        (prevCounter, counterChange) => prevCounter + counterChange,
+        0
+    );
 
     const handleDecrement = useCallback(function handleDecrement() {
-        setCounter((prevCounter) => prevCounter - 1);
+        //setCounter((prevCounter) => prevCounter - 1);
+        setCounterChanges((prevCounterChanges) => [-1, ...prevCounterChanges]);
     }, []);
 
     const handleIncrement = useCallback(function handleIncrement() {
-        setCounter((prevCounter) => prevCounter + 1);
+        //setCounter((prevCounter) => prevCounter + 1);
+        setCounterChanges((prevCounterChanges) => [1, ...prevCounterChanges]);
     }, []);
 
     return (
@@ -51,11 +61,12 @@ export default function Counter({ initialCount }) {
                 <IconButtonMemo icon={MinusIcon} onClick={handleDecrement}>
                     Decrement
                 </IconButtonMemo>
-                <CounterOutput value={counter} />
+                <CounterOutput value={currentCounter} />
                 <IconButtonMemo icon={PlusIcon} onClick={handleIncrement}>
                     Increment
                 </IconButtonMemo>
             </p>
+            <CounterHistory history={counterChanges} />
         </section>
     );
 }
