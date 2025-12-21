@@ -32,22 +32,33 @@ export default function Counter({ initialCount }) {
     );
 
     // const [counter, setCounter] = useState(initialCount);
-    const [counterChanges, setCounterChanges] = useState([initialCount]);
+    const [counterChanges, setCounterChanges] = useState([
+        {
+            value: initialCount,
+            id: Math.random() * 100,
+        },
+    ]);
     console.log(counterChanges);
 
     const currentCounter = counterChanges.reduce(
-        (prevCounter, counterChange) => prevCounter + counterChange,
+        (prevCounter, counterChange) => prevCounter + counterChange.value,
         0
     );
 
     const handleDecrement = useCallback(function handleDecrement() {
         //setCounter((prevCounter) => prevCounter - 1);
-        setCounterChanges((prevCounterChanges) => [-1, ...prevCounterChanges]);
+        setCounterChanges((prevCounterChanges) => [
+            { value: -1, id: Math.random() * 100 },
+            ...prevCounterChanges,
+        ]);
     }, []);
 
     const handleIncrement = useCallback(function handleIncrement() {
         //setCounter((prevCounter) => prevCounter + 1);
-        setCounterChanges((prevCounterChanges) => [1, ...prevCounterChanges]);
+        setCounterChanges((prevCounterChanges) => [
+            { value: 1, id: Math.random() * 100 },
+            ...prevCounterChanges,
+        ]);
     }, []);
 
     return (
