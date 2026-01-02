@@ -26,19 +26,18 @@ function isPrime(number) {
 
 export default function Counter({ initialCount }) {
     log("<Counter /> rendered", 1);
+
     const initialCountIsPrime = useMemo(
         () => isPrime(initialCount),
         [initialCount]
     );
 
-    // const [counter, setCounter] = useState(initialCount);
     const [counterChanges, setCounterChanges] = useState([
         {
             value: initialCount,
             id: Math.random() * 100,
         },
     ]);
-    console.log(counterChanges);
 
     const currentCounter = counterChanges.reduce(
         (prevCounter, counterChange) => prevCounter + counterChange.value,
@@ -54,7 +53,6 @@ export default function Counter({ initialCount }) {
     }, []);
 
     const handleIncrement = useCallback(function handleIncrement() {
-        //setCounter((prevCounter) => prevCounter + 1);
         setCounterChanges((prevCounterChanges) => [
             { value: 1, id: Math.random() * 100 },
             ...prevCounterChanges,
